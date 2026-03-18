@@ -4,23 +4,25 @@ description: Manage GPCA bank cards, USDT wallet, KYC verification, and automate
 version: 1.0.0
 metadata:
   openclaw:
-    requires:
-      env:
-        - GPCA_API_URL
-    primaryEnv: GPCA_API_URL
     emoji: "\U0001F4B3"
-    install:
-      - id: gpca-mcp
-        kind: node
-        package: gpca-mcp-server
-        bins:
-          - gpca-mcp-server
-        label: GPCA MCP Server
+    homepage: https://github.com/mooling99/gpca-skill
 ---
 
 # GPCA - Card Manager & Shopping Assistant
 
 Manage GPCA Mastercard/Visa bank cards, USDT crypto wallet, and automate shopping on e-commerce platforms.
+
+## Setup
+
+Install the GPCA MCP server:
+```bash
+git clone https://github.com/mooling99/gpca-mcp-server.git
+cd gpca-mcp-server && npm install && npm run build
+```
+Then add to your MCP config:
+```json
+{"gpca-card-manager": {"command": "node", "args": ["/path/to/gpca-mcp-server/dist/index.js"]}}
+```
 
 ## First Step
 
