@@ -1,40 +1,22 @@
 # Shopping Assistant - Detailed Workflows
 
-## Browser Tool Compatibility
+## Browser Automation
 
-This skill uses browser automation. The instructions use **generic action descriptions** that map to different platforms:
+This skill uses OpenClaw's built-in browser. Use these commands:
 
-| Action | Playwright MCP | OpenClaw Built-in | Claude in Chrome |
-|--------|---------------|-------------------|-----------------|
-| Open URL | `browser_navigate(url)` | `browser open <url>` | `navigate(url)` |
-| Read page | `browser_snapshot()` | `browser snapshot` | `read_page()` |
-| Click element | `browser_click(ref)` | `browser click <ref>` | `computer(click)` |
-| Type text | `browser_type(ref, text)` | `browser type <ref> "text"` | `form_input()` |
-| Fill form | `browser_fill_form(fields)` | `browser fill --fields JSON` | `form_input()` |
-| Screenshot | `browser_take_screenshot()` | `browser screenshot` | `computer(screenshot)` |
-| Wait | `browser_wait_for(condition)` | `browser wait --text "value"` | (manual delay) |
-
-Use whichever browser tool is available in your environment.
+| Action | Command |
+|--------|---------|
+| Open URL | `browser open <url>` |
+| Read page | `browser snapshot` |
+| Click element | `browser click <ref>` |
+| Type text | `browser type <ref> "text"` |
+| Fill form | `browser fill --fields JSON` |
+| Screenshot | `browser screenshot` |
+| Wait | `browser wait --text "value"` |
 
 ### Browser Profile & Login Persistence
 
-Login state (cookies/sessions) must persist across sessions so users don't re-login every time.
-
-| Platform | How it works | User setup |
-|----------|-------------|------------|
-| **OpenClaw** | Built-in `openclaw` profile auto-persists cookies. Zero config needed. | None |
-| **Claude Code + Playwright MCP** | Add `--headed --user-data-dir ~/.gpca/browser-profile` to MCP args. | One-time MCP config |
-| **Claude in Chrome** | Uses the user's existing Chrome directly. All login states inherited. | Install Chrome extension |
-
-**Recommended Playwright MCP config for Claude Code:**
-```json
-{
-  "playwright": {
-    "command": "npx",
-    "args": ["@playwright/mcp@latest", "--headed", "--user-data-dir", "~/.gpca/browser-profile"]
-  }
-}
-```
+OpenClaw auto-persists cookies and sessions. No user configuration needed. When a user logs into an e-commerce site (e.g., Taobao) in the browser, the session is preserved for subsequent visits.
 
 ---
 
@@ -69,9 +51,9 @@ GPCA login requires a 6-digit email verification code. Instead of asking the use
 | `126.com` | 126 Mail | `https://mail.126.com` |
 
 ### Email Login State
-- **First time**: Guide user to log into their email in the browser manually. The browser session/profile will persist
+- **First time**: Guide user to log into their email in the browser manually. The session will persist automatically.
 - **Session expired**: If the email inbox requires re-login, inform the user and assist
-- **Gmail note**: Google may block automated browser logins. Recommend users use QQ/163/Outlook email for GPCA, or log into Gmail manually in the browser profile first
+- **Gmail note**: Google may block automated browser logins. Recommend users use QQ/163/Outlook email for GPCA, or log into Gmail manually first
 - **Fallback**: If auto-reading fails after 60 seconds, ask the user to check email manually
 
 ### Rules
@@ -115,7 +97,7 @@ Then verify funding:
 - If any limit exceeded, inform user which limit and remaining allowance. Offer to adjust or cancel.
 
 ### Step 2: Product Search
-1. Navigate to the target e-commerce site
+1. Open the target e-commerce site URL in the browser
 2. **Domain verification**: Verify current URL domain is in the trusted list. If not, STOP and alert user.
 3. Take a snapshot, fill search box, click search
 4. Present top 3-5 results (name, price, rating, availability) — ask user to select

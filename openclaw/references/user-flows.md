@@ -14,7 +14,7 @@
 2. Collect email and password
 3. `gpca_login` → sends 6-digit email verification code
 4. **Offer auto-login**: "我可以帮您自动从邮箱读取验证码，或者您手动输入。选择哪种？"
-   - Auto: Playwright 打开邮箱 → 找到 GPCA 邮件 → 提取验证码（详见 SHOPPING-SKILL.md）
+   - Auto: 在浏览器中打开邮箱 → 找到 GPCA 邮件 → 提取验证码（详见 shopping-assistant.md）
    - Manual: 用户手动输入验证码
 5. `gpca_verify_login` → authenticated
 
@@ -32,7 +32,7 @@
 4. Activate card → `gpca_activate_card`
 5. Deposit USDT → `gpca_supported_chains` → `gpca_deposit_address` → user sends USDT
 6. Transfer to card → `gpca_deposit_to_card` (USDT → USD)
-7. Use card for purchases (Amazon, etc.) — see SHOPPING-SKILL.md
+7. Use card for purchases (Amazon, etc.) — see shopping-assistant.md
 
 ## Quick Balance Check
 1. `gpca_auth_status` → verify logged in

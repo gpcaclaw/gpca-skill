@@ -1,7 +1,7 @@
 ---
 name: gpca
 description: Manage GPCA bank cards, USDT wallet, KYC verification, and automate shopping on Amazon/Taobao with browser.
-version: 1.3.0
+version: 2.0.0
 metadata:
   openclaw:
     emoji: "\U0001F4B3"
@@ -17,7 +17,11 @@ Manage GPCA Mastercard/Visa bank cards, USDT crypto wallet, and automate shoppin
 
 ## MCP Server Setup (Required — Auto-install)
 
-This skill needs the GPCA MCP server for API tools. The agent MUST run these setup steps automatically after the skill is installed. Do NOT ask the user to run them manually.
+This skill needs the GPCA MCP server for API tools (`gpca_auth_status`, `gpca_list_cards`, etc.). When the user first uses this skill, check if the MCP tools are available. If not, run the setup steps below automatically. Do NOT ask the user to run them manually.
+
+### Check if already installed
+
+Try calling `gpca_auth_status`. If the tool exists and returns a response (even `authenticated: false`), the MCP server is already configured — skip setup.
 
 ### Step 1: Clone and build
 
@@ -26,14 +30,11 @@ git clone https://github.com/gpcaclaw/gpca-mcp-server.git ~/.gpca/mcp-server
 cd ~/.gpca/mcp-server && npm install && npm run build
 ```
 
-### Step 2: Register the MCP server
+### Step 2: Register with mcporter
 
-Use `mcporter` (pre-installed with OpenClaw) to register the server:
 ```bash
-mcporter config add gpca-card-manager --command node --arg ~/.gpca/mcp-server/dist/index.js --persist ~/.openclaw/workspace/config/mcporter.json
+mcporter config add gpca-card-manager --command node --arg ~/.gpca/mcp-server/dist/index.js
 ```
-
-This writes the config to `mcporter.json` and hot-reloads automatically — no gateway restart needed.
 
 ### Step 3: Verify
 
@@ -41,16 +42,16 @@ This writes the config to `mcporter.json` and hot-reloads automatically — no g
 mcporter list gpca-card-manager
 ```
 
-If the server appears in the list, setup is complete.
+If the server appears with 46 tools listed, setup is complete. Tell the user: "✅ GPCA MCP Server 安装完成，可以开始使用了。"
 
-### Claude Code (alternative)
+### Updating
 
-For Claude Code users (not OpenClaw):
+To update the MCP server to the latest version:
 ```bash
-git clone https://github.com/gpcaclaw/gpca-mcp-server.git ~/.gpca/mcp-server
-cd ~/.gpca/mcp-server && npm install && npm run build
-claude mcp add gpca-card-manager -s user -- node ~/.gpca/mcp-server/dist/index.js
+cd ~/.gpca/mcp-server && git pull && npm install && npm run build
 ```
+
+No need to re-register with mcporter — the existing config will use the updated build.
 
 ## First Step
 
@@ -70,6 +71,8 @@ Always call `gpca_auth_status` first. If not authenticated, ask: "Do you have a 
 Details: {baseDir}/references/card-manager.md | API: {baseDir}/references/api-reference.md
 
 ## Shopping Flow (7 Steps)
+
+Shopping uses OpenClaw's built-in browser automation. Use `browser open`, `browser snapshot`, `browser click`, `browser type`, `browser screenshot`, `browser wait` commands.
 
 1. **Parse intent** + verify card balance + check spending limits (`gpca_get_spending_limits`)
 2. **Search product** on target site (default Amazon), verify domain is trusted
