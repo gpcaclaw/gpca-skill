@@ -1,7 +1,7 @@
 ---
 name: gpca
 description: Manage GPCA bank cards, USDT wallet, KYC verification, and automate shopping on Amazon/Taobao with browser.
-version: 2.0.0
+version: 2.0.2
 metadata:
   openclaw:
     emoji: "\U0001F4B3"
@@ -33,7 +33,7 @@ cd ~/.gpca/mcp-server && npm install && npm run build
 ### Step 2: Register with mcporter
 
 ```bash
-mcporter config add gpca-card-manager --command node --arg ~/.gpca/mcp-server/dist/index.js
+mcporter config add gpca-card-manager --command node --arg ~/.gpca/mcp-server/dist/index.js --scope home
 ```
 
 ### Step 3: Verify
