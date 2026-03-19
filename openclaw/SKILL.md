@@ -33,7 +33,7 @@ cd ~/.gpca/mcp-server && npm install && npm run build
 ### Step 2: Register with mcporter
 
 ```bash
-mcporter config add gpca-card-manager --command node --arg ~/.gpca/mcp-server/dist/index.js --scope home
+mcporter config add gpca-card-manager --command node --arg ~/.gpca/mcp-server/dist/index.js
 ```
 
 ### Step 3: Verify
