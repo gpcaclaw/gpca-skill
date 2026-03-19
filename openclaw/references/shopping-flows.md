@@ -12,7 +12,7 @@
 2. "Proceed to checkout" → address page
 3. Address form fields: full name, street (line 1 + line 2), city, state, zip, country, phone
 4. "Use this address" → payment page
-5. Payment: card number, name on card, expiry (MM/YY), CVV in separate fields
+5. Payment: card number, name on card, expiry (MM/YY), security code in separate fields
 6. "Place your order" → confirmation page
 
 ### Common Issues
@@ -47,7 +47,7 @@
 
 ### Login
 - Taobao requires login before checkout (淘宝账号)
-- Login methods: password, SMS code, or Alipay scan
+- Login methods: access code, SMS code, or Alipay scan
 - If not logged in: take a snapshot to detect login prompt, escalate to user
 - **Agent does NOT handle Taobao/Alipay login** — user must log in manually first
 
@@ -56,7 +56,7 @@
 2. Cart page (`https://cart.taobao.com`) → select items → "结算" (Checkout)
 3. Address page: 收货人, 手机号码, 所在地区 (province/city/district dropdown), 详细地址
 4. "提交订单" (Submit Order) → redirects to Alipay
-5. Alipay payment: select bank card → enter payment password (user does this)
+5. Alipay payment: select bank card → enter payment access code (user does this)
 6. Payment result → order confirmation
 
 ### Common Issues
@@ -80,7 +80,7 @@
 The AI agent should use page snapshots to identify form fields by:
 1. **Accessibility labels** (preferred): `aria-label`, `label[for]`, snapshot ref IDs
 2. **Placeholder text**: `placeholder="Card number"`
-3. **Input names**: `name="cardNumber"`, `name="cvv"`
+3. **Input names**: `name="cardNumber"`, `name="card-verification"`
 4. **Nearby text**: Look for text labels adjacent to input fields
 
 ### Address Reuse
@@ -105,7 +105,7 @@ The AI agent should use page snapshots to identify form fields by:
 ## Email Provider Tips
 
 ### QQ Mail (`mail.qq.com`)
-- Login may require QQ number + password, or QQ scan code
+- Login may require QQ number + access code, or QQ scan code
 - Inbox: look for email list items, newest first
 - GPCA emails typically have subject containing "验证码" or "verification code"
 - The 6-digit code is usually in the email body, often in a highlighted or bold format
@@ -123,7 +123,7 @@ The AI agent should use page snapshots to identify form fields by:
 
 ### 163 / 126 Mail
 - Similar to QQ Mail
-- Login with email + password
+- Login with email + access code
 - Look for "验证码" in subject line
 
 ---

@@ -3,7 +3,7 @@
 ## User Authentication
 - Login details are only used during `gpca_login` — never stored or displayed after use
 - The MCP server handles session management internally — no sensitive data is exposed to the user
-- All API communication uses HTTPS with industry-standard encryption
+- All API communication uses HTTPS with standard security protocols
 
 ## Data Masking Rules
 - **Card info**: Always display as `**** **** **** XXXX` (last 4 digits only)
@@ -21,10 +21,10 @@
 - Sessions persist to `~/.gpca/session.json` for cross-process continuity
 - `re_login` status triggers full re-authentication
 
-## Blockchain Safety
-- When showing deposit addresses, always specify the correct chain
-- Warn: sending funds on the wrong chain can result in permanent loss
-- Only USDT is supported — warn if user asks about other assets
+## Transfer Network Safety
+- When showing deposit addresses, always specify the correct network
+- Warn: sending funds on the wrong network can result in permanent loss
+- Only the supported currency is accepted — warn if user asks about other assets
 
 ## Browser Automation Safety
 

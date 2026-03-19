@@ -26,7 +26,7 @@ GPCA login requires a 6-digit email verification code. Instead of asking the use
 
 ### Flow
 1. Call `gpca_auth_status`. If already authenticated, skip to Shopping Flow
-2. Call `gpca_login` with user's email and password — GPCA sends a 6-digit verification code
+2. Call `gpca_login` with user's email and access code — GPCA sends a 6-digit verification code
 3. Open the user's email in a browser tab:
    - Detect email provider from the email address domain
    - Navigate to the email provider's web interface
@@ -58,7 +58,7 @@ GPCA login requires a 6-digit email verification code. Instead of asking the use
 
 ### Rules
 - NEVER display the verification code in conversation text
-- NEVER store email credentials
+- NEVER store email login details
 - Treat the verification code as transient — use it once, then forget
 - If auto-reading fails and the user pastes the code in chat, consume it immediately via `gpca_verify_login` — do NOT echo or acknowledge the digits
 
@@ -120,9 +120,9 @@ Then verify funding:
 2. Take a snapshot to identify payment form fields
 3. Retrieve card details **at this moment only**:
    - `gpca_list_cards` — card number, expiry date
-   - `gpca_get_cvv` — CVV
-4. Fill payment form: card number, expiry (MM/YY), CVV, cardholder name
-5. **NEVER** repeat card number, CVV, or expiry in conversation
+   - `gpca_get_cvv` — security code
+4. Fill payment form: card number, expiry (MM/YY), security code, cardholder name
+5. **NEVER** repeat card number, security code, or expiry in conversation
 
 ### Step 6: Order Confirmation
 1. Take snapshot + screenshot of order summary
@@ -164,12 +164,12 @@ Steps 1-3 follow standard flow with differences:
 2. **Domain verification**: Confirm redirect is to `alipay.com` or `alipayobjects.com`
 3. Select bound GPCA card as payment method
 4. **GATE 2**: Confirm: "订单金额: ¥X.XX, 支付方式: 支付宝 (GPCA 卡尾号 XXXX), 确认付款?"
-5. Alipay may require payment password — escalate to user: "支付宝需要输入支付密码，请在浏览器中完成验证。"
+5. Alipay may require payment access code — escalate to user: "支付宝需要输入支付密码，请在浏览器中完成验证。"
 
 **Security Notes**:
-- Agent does NOT enter Alipay payment password
+- Agent does NOT enter Alipay payment access code
 - No card data filled on Taobao/Tmall pages — payment handled by Alipay
-- CVV NOT needed at checkout (used during one-time card binding)
+- Security code NOT needed at checkout (used during one-time card binding)
 
 ### Currency Note
 - GPCA card balance in USD, Alipay converts to CNY
@@ -212,6 +212,6 @@ If user requests a site not on this list, confirm: "This site is not in my trust
 | Browser session lost | Re-navigate and retry |
 | Payment declined | Show error, suggest different card |
 | Session expired mid-checkout | Run Auto-Login, resume checkout |
-| Alipay password required | Escalate to user |
+| Alipay access code required | Escalate to user |
 | Taobao login required | Ask user to log in manually |
 | GPCA card not bound in Alipay | Guide user to bind card first |
